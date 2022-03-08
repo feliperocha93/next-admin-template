@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import useAppData from "../../data/hook/useAppData";
 import Content from "./Content";
 import Header from "./Header";
 import SideMenu from "./SideMenu";
@@ -9,8 +11,10 @@ interface LayoutProps {
 }
 
 function Layout(props: LayoutProps) {
+  const { theme } = useAppData();
+
   return (
-    <div className={`dark flex h-screen w-screen`}>
+    <div className={`${theme} flex h-screen w-screen`}>
       <SideMenu />
       <div className={`
         flex flex-col w-full p-7
