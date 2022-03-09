@@ -1,12 +1,15 @@
 import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
 import { IconWarning } from "../components/icons";
+import useAuth from "../data/hook/useAuth";
 
 interface authProps {
 
 }
 
 function Auth(props: authProps) {
+  const {signUp, login, loginGoogle} = useAuth();
+
   const [mode, setMode] = useState<'login' | 'sign'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,12 +20,15 @@ function Auth(props: authProps) {
     setTimeout(() => setError(null), time * 1000);
   }
 
-  function submit() {
-    showError('moio pai');
-    if(mode === 'login') {
-      console.log('login');
-    } else {
-      console.log('sign');
+  async function submit() {
+    try {
+      if(mode === 'login') {
+        await login(email, password);
+      } else {
+        await signUp(email, password);
+      }
+    } catch (e) {
+      setError(e?.message)
     }
   }
 
@@ -70,7 +76,7 @@ function Auth(props: authProps) {
 
         <hr className="my-6 border-gray-300 w-full" />
 
-        <button onClick={submit} className='w-full bg-red-500 hover:bg-red-400 text-white rounded-lg px-4 py-3 mb-8'>
+        <button onClick={loginGoogle} className='w-full bg-red-500 hover:bg-red-400 text-white rounded-lg px-4 py-3 mb-8'>
           {mode === 'login' ? 'Login with Google' : 'Sign up'}
         </button>
 
